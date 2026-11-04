@@ -135,8 +135,9 @@ Configuration comes from environment variables, and only `src/config` reads them
 | Test timeout | 30 seconds |
 | CI triggers | Push to `master` or `main`, pull requests, and manual runs |
 | CI artifact retention | 14 days |
+| CI report | Published to GitHub Pages after each run on `master` |
 
-All generated output goes to a single `artifacts/` folder, which is not committed. CI uploads the HTML report from it.
+All generated output goes to a single `artifacts/` folder, which is not committed. CI uploads the HTML report from it, and publishes it to GitHub Pages from `master`.
 
 ```text
 artifacts/
