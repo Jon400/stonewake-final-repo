@@ -37,6 +37,15 @@ The prompts given to the AI were short task requests, one per backlog task. Exam
 - Tests: API and UI specs under `tests/`, grouped by feature.
 - Planning: the backlog and expanded plans in `.plan/`.
 
+### Docs written with the AI
+
+| Doc | What it holds | AI's part |
+| --- | --- | --- |
+| [docs/PRODUCT_DEFINITION.md](docs/PRODUCT_DEFINITION.md) | Product overview and the requirements tracker | Structured the product's requirements into the tracker. |
+| [docs/TEST_PLAN.md](docs/TEST_PLAN.md) | Every test needed to cover the product, each tied to a requirement | Drafted the plan from the tracker and the OpenAPI spec. |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, dependency rules, secrets and environments | Drafted it, then built `src/` from it. |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md) | The domain terms the code and docs use | Drafted the terms and the terms with more than one meaning. |
+
 The human owns the decisions: scope, requirements, which tests to write, credentials, and merging pull requests. AI output is reviewed before it is committed.
 
 ### AI flows built
