@@ -73,6 +73,34 @@ Every run on `master` publishes the HTML report to GitHub Pages, at `https://<yo
 
 Runs on other branches don't publish to Pages. Download their report instead, from the run's **Artifacts** section (`playwright-report`, kept for 14 days), unzip it, and open it with `npx playwright show-report <folder>`.
 
+## Architecture
+
+The tests cover two surfaces, the API and the web dashboard, and share one layered code base. The full description is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+```text
+src/
+  api/        clients (one per API resource) and models (request and response types)
+  web/        pages (one per dashboard page), components (shared UI parts) and labels (UI text)
+  config/     the only place that reads environment variables
+  core/       enums, API error codes, exceptions and shared types
+  factories/  build test input in code
+  fixtures/   Playwright fixtures that hand specs ready-to-use pages and clients
+  utils/      logger and other helpers
+test-data/    fixed input files, such as CSVs
+tests/        specs, grouped by feature, e.g. tests/countries/countries.api.spec.ts
+```
+
+How the layers fit together:
+
+- **Specs only assert.** They get pages and clients from fixtures, and never create them or use selectors or raw requests directly.
+- **Page objects and clients do the work.** Pages hold the selectors and perform actions in the dashboard. Clients call the API. Neither is allowed to call the other.
+- **Layers import only downwards.** For example `web/pages` may use `web/components`, `web/labels` and `core`, but never `api`. `core` imports nothing. The allowed imports for each layer are in the [dependency rules](docs/ARCHITECTURE.md#dependency-rules).
+- **One place for each thing.** UI text lives in `web/labels`, configuration in `config`, and test input in `factories` or `test-data`.
+- **Two Playwright projects.** Specs ending in `.api.spec.ts` run in the `api` project, which needs no browser. Specs ending in `.web.spec.ts` run in the `web` project. A future `*.mcp.spec.ts` suffix is reserved for the MCP server.
+- **Output** goes to `artifacts/`: the HTML report in `playwright-report/`, and traces and screenshots of failures in `test-results/`.
+
+The rest of the docs: [test plan](docs/TEST_PLAN.md), [product definition and requirements tracker](docs/PRODUCT_DEFINITION.md) and [glossary](docs/GLOSSARY.md).
+
 ## AI usage
 
 This project was built with [Claude Code](https://claude.com/claude-code), Anthropic's AI coding agent, working alongside a human who set the direction and reviewed every change.
