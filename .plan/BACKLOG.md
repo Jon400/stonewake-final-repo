@@ -17,6 +17,7 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 ## docs
 
 - [x] docs/add-ai-usage-readme: add an AI usage section to README.md
+- [x] docs/add-docs-to-ai-usage: list the docs/ files and the AI's part in each in the AI usage section of README.md
 
 - [x] docs/add-project-docs: commit the docs/ folder, which is currently untracked (GLOSSARY.md goes in docs/write-glossary)
 - [x] docs/write-test-plan: write docs/TEST_PLAN.md, which is currently empty
