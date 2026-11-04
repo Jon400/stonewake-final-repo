@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "paths": {
+      "@api/clients": ["./src/api/clients/index.ts"],
+      "@api/models": ["./src/api/models/index.ts"],
+      "@web/pages": ["./src/web/pages/index.ts"],
+      "@web/components": ["./src/web/components/index.ts"],
+      "@web/labels": ["./src/web/labels/index.ts"],
+      "@config": ["./src/config/index.ts"],
+      "@core": ["./src/core/index.ts"],
+      "@factories": ["./src/factories/index.ts"],
+      "@fixtures": ["./src/fixtures/index.ts"],
+      "@utils": ["./src/utils/index.ts"],
+      "@test-data/*": ["./test-data/*"]
+    }
+  },
+  "include": ["src", "tests", "test-data", "playwright.config.ts"],
+  "exclude": ["node_modules", "artifacts", "playwright-report", "test-results"]
+}

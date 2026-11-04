@@ -5,3 +5,7 @@
 
 # Secrets
 .playwright-mcp/
+
+# Generated
+artifacts/
+node_modules/
