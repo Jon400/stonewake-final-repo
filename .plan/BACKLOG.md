@@ -19,6 +19,7 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 
 ## docs
 
+- [x] docs/add-readme-run-instructions: add prerequisites, setup, how to run locally and on GitHub, and how to view the report on GitHub Pages to README.md
 - [x] docs/add-ai-usage-readme: add an AI usage section to README.md
 - [x] docs/add-docs-to-ai-usage: list the docs/ files and the AI's part in each in the AI usage section of README.md
 
