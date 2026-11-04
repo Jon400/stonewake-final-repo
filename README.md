@@ -16,6 +16,63 @@ Not sure what a fork is? Read GitHub's guides:
 - [About forks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks)
 - [Fork a repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
 
+### Prerequisites
+
+- [Node.js](https://nodejs.org) 22 or later (CI uses 22), with npm
+- [Git](https://git-scm.com)
+- A Stonewake account with an API key, for the credentials below
+- Internet access to the app and API. The tests run against the live product.
+
+### Set up
+
+```
+npm ci
+npx playwright install chromium
+cp .env.example .env
+```
+
+Then fill in `.env`. Credentials and URLs come only from these environment variables, and `.env` is git-ignored:
+
+| Variable | What it holds |
+| --- | --- |
+| `STONEWAKE_APP_URL` | Dashboard URL, `https://app.stonewake.ai` |
+| `STONEWAKE_API_URL` | API URL, `https://api.stonewake.ai` |
+| `STONEWAKE_EMAIL` | Email of the test account |
+| `STONEWAKE_PASSWORD` | Password of the test account |
+| `STONEWAKE_API_KEY` | API key of the test account |
+
+### Run the tests locally
+
+| Command | What it does |
+| --- | --- |
+| `npm test` | Runs all tests, API and web |
+| `npm run test:api` | Runs the `api` project only |
+| `npm run test:web` | Runs the `web` project only |
+| `npx playwright test tests/auth` | Runs one feature folder |
+| `npx playwright test --headed` | Shows the browser for web tests |
+| `npx playwright test --ui` | Opens Playwright's UI mode |
+
+Checks that CI also runs: `npm run typecheck`, `npm run lint` and `npm run format:check`. `npm run format` fixes formatting.
+
+After a run, open the HTML report with `npx playwright show-report artifacts/playwright-report`. Traces and screenshots of failures are in `artifacts/test-results/`.
+
+### Run the tests on GitHub
+
+The [Run Tests workflow](.github/workflows/run-tests.yml) runs on demand and on a daily cron (06:00 UTC). It does not run on pull requests or pushes.
+
+One-time setup in your fork:
+
+1. **Settings > Secrets and variables > Actions:** add the five `STONEWAKE_*` variables above as repository secrets.
+2. **Settings > Pages:** set **Source** to **GitHub Actions**.
+
+To run it: open the **Actions** tab, choose **Run Tests**, click **Run workflow**, and pick `master`.
+
+### View the report on GitHub Pages
+
+Every run on `master` publishes the HTML report to GitHub Pages, at `https://<your-github-user>.github.io/<repository-name>/`. For the `Jon400` fork this is https://jon400.github.io/stonewake-final-repo/. The latest run replaces the previous report.
+
+Runs on other branches don't publish to Pages. Download their report instead, from the run's **Artifacts** section (`playwright-report`, kept for 14 days), unzip it, and open it with `npx playwright show-report <folder>`.
+
 ## AI usage
 
 This project was built with [Claude Code](https://claude.com/claude-code), Anthropic's AI coding agent, working alongside a human who set the direction and reviewed every change.
