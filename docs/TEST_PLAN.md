@@ -9,6 +9,7 @@ This plan lists the tests needed to cover the whole Stonewake product: the dashb
 | Column | Value | Meaning |
 | --- | --- | --- |
 | Case | `TC-<area>-<number>` | The ID of the test in this plan |
+| Case | `TC-E2E-<number>` | The ID of an end-to-end flow. See [End-to-end flows](#end-to-end-flows) |
 | Test | | What the test checks |
 | Requirements | Tracker IDs, or None | The requirements in the [tracker](PRODUCT_DEFINITION.md#requirements) that the test covers. None means the feature has no requirement yet |
 | Surface | API | Calls the REST API |
@@ -23,31 +24,40 @@ Automated says only whether a test exists, not whether it passes. Results belong
 
 Where an automated test checks only part of a requirement, the requirement has one row for the part it checks and another row for the rest.
 
+### End-to-end flows
+
+An end-to-end flow sits in the table of the feature it checks, after the feature's other cases. A flow that covers more than one feature sits under the one it mainly checks, and its Requirements column names the rest.
+
+Each flow uses the dashboard and the REST API in one test, so that a result is checked from both sides. The dashboard does the action, because `/v1` only reads, and the API then confirms what the dashboard did or shows. Cases that change workspace data follow the [test data rules](#before-running-the-tests): they use the team set aside for tests, and undo the change in teardown.
+
+Not planned as a flow: recording a review or an assessment. These records are append-only (DEC-03), so teardown cannot undo them. Agree the case with Stonewake first, as the test data rules require.
+
 ## Coverage summary
+
+Each area's count includes its [end-to-end flows](#end-to-end-flows).
 
 | Area | Tests | Automated | Not automated |
 | --- | --- | --- | --- |
-| Access | 15 | 5 | 10 |
+| Access | 16 | 5 | 11 |
 | Navigation | 7 | 2 | 5 |
-| Deal Book | 22 | 3 | 19 |
+| Deal Book | 26 | 3 | 23 |
 | Tenders | 15 | 0 | 15 |
-| Countries | 16 | 6 | 10 |
-| Institutions | 5 | 3 | 2 |
-| Network | 12 | 1 | 11 |
-| Portfolio | 30 | 5 | 25 |
+| Countries | 17 | 6 | 11 |
+| Institutions | 6 | 3 | 3 |
+| Network | 13 | 1 | 12 |
+| Portfolio | 32 | 5 | 27 |
 | Monitoring | 5 | 0 | 5 |
 | Screenings | 9 | 0 | 9 |
 | Scoring | 7 | 0 | 7 |
 | EDD dossiers | 5 | 0 | 5 |
 | Alerts | 4 | 0 | 4 |
-| API | 37 | 13 | 24 |
-| MCP | 5 | 0 | 5 |
+| API | 38 | 13 | 25 |
+| MCP | 6 | 0 | 6 |
 | Exports | 3 | 0 | 3 |
 | Evidence | 5 | 0 | 5 |
 | Decisions | 6 | 0 | 6 |
 | Natural persons | 8 | 0 | 8 |
-| Compliance | 8 | 0 | 8 |
-| End-to-end flows | 13 | 0 | 13 |
+| Compliance | 9 | 0 | 9 |
 | Product areas with no requirement yet | 28 | 1 | 27 |
 | **Total** | **265** | **39** | **226** |
 
@@ -100,6 +110,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-AUTH-13 | A viewer, analyst or compliance user cannot use the admin-only actions | AUTH-09 | Web | No |
 | TC-AUTH-14 | A workspace with single sign on signs in through Microsoft Entra ID over SAML 2.0 | AUTH-10 | Web | No |
 | TC-AUTH-15 | SCIM adds and removes a user in a workspace that has it switched on | AUTH-10 | API | No |
+| TC-E2E-11 | A viewer who cannot start a screening in the dashboard is also refused by a direct request, and an analyst can do both | AUTH-07, AUTH-06 | API + Web | No |
 
 ## Navigation
 
@@ -139,6 +150,10 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-DEAL-20 | Export downloads an Excel workbook whose rows match the book | DEAL-12 | Web | No |
 | TC-DEAL-21 | A deal downloads as a valid PDF report, through `report.pdf` and `pack.pdf` | DEAL-13 | API | No |
 | TC-DEAL-22 | A deal downloads as a valid PowerPoint deck, through `deck.pptx` | DEAL-13 | API | No |
+| TC-E2E-02 | The Deal Book lists deals in the same order as `GET /v1/deals`, and its count of held-back deals matches the API with `include_hidden` | DEAL-01, DEAL-05 | API + Web | No |
+| TC-E2E-03 | A deal found through `GET /v1/deals` opens in the dashboard with the same name and score, and its Briefing citations resolve through `POST /v1/citations/resolve` to the same evidence | DEAL-02, DEAL-10, EVID-01 | API + Web | No |
+| TC-E2E-08 | Following a deal in the dashboard lists it under Following, and the API shows it as followed. Unfollowing reverses both | DEAL-08 | API + Web | No |
+| TC-E2E-09 | A deal dismissed in the dashboard with a reason leaves the book, and `GET /v1/deals?status=dismissed` returns it with that reason. The case runs only if a dismissal can be undone, or when Stonewake agrees it first | DEAL-09 | API + Web | No |
 
 ## Tenders
 
@@ -180,6 +195,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-CTRY-14 | An unknown country shows Page not found in the dashboard | CTRY-08 | Web | Yes (ui 8) |
 | TC-CTRY-15 | The list exports as an Excel workbook whose rows match the page | CTRY-09 | Web | No |
 | TC-CTRY-16 | A country downloads as a valid PDF brief | CTRY-09 | Web | No |
+| TC-E2E-04 | A country from `GET /v1/countries` opens in the dashboard with the same name and risk score as `GET /v1/countries/{code}`, and a country the API returns 404 for shows Page not found | CTRY-02, CTRY-08 | API + Web | No |
 
 ## Institutions
 
@@ -190,6 +206,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-INST-03 | The Kind and Country filters show on the page | INST-01 | Web | Yes (ui 9) |
 | TC-INST-04 | The Kind and Country filters each narrow the list to matching institutions | INST-01 | Web | No |
 | TC-INST-05 | The registry holds agencies, banks, multilaterals and exporters | INST-01 | API | No |
+| TC-E2E-05 | An institution found by search in the dashboard has the same detail as `GET /v1/entities/{entity_id}` | INST-01 | API + Web | No |
 
 ## Network
 
@@ -207,6 +224,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-NET-10 | Relationships export as CSV, and the rows match the graph | NET-05, EXP-01 | Web | No |
 | TC-NET-11 | `GET /v1/nodes/{node_id}/ownership-chain` walks upward with each hop cited, at a default threshold of 25 percent | NET-06 | API | No |
 | TC-NET-12 | The ownership chain refuses a threshold outside its range, with 422 | NET-06, API-04 | API | No |
+| TC-E2E-06 | A company found by `GET /v1/search` is found by name in the Network page, and the relationships the graph draws match `GET /v1/nodes/{node_id}/network` | NET-01, NET-02 | API + Web | No |
 
 ## Portfolio
 
@@ -242,6 +260,8 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-PORT-28 | A removed company's earlier history stays on record, and `include_inactive` returns it | PORT-14, DEC-03 | API | No |
 | TC-PORT-29 | A row opens the company page, with the company's name as its heading | PORT-15 | Web | Yes (ui 10) |
 | TC-PORT-30 | The company page shows the signal breakdown and records | PORT-15 | Web | No |
+| TC-E2E-01 | The Portfolio tiles show the same count for each of the six statuses as `GET /v1/portfolio/summary`, and the same total as `GET /v1/portfolio` | PORT-01, PORT-02 | API + Web | No |
+| TC-E2E-07 | A company added to the book in the dashboard appears in `GET /v1/portfolio` with a first review due one year later, and the portfolio total rises by one. Removing it with a reason takes it off the default list, and `include_inactive` still returns it | PORT-12, PORT-14, PORT-18, DEC-03 | API + Web | No |
 
 ## Monitoring
 
@@ -339,6 +359,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-API-35 | A role other than admin gets 403 from `POST /org/api-keys` | API-17 | API | No |
 | TC-API-36 | The security docs confirm that keys are stored hashed | API-17 | Review | No |
 | TC-API-37 | A workspace with the API not enabled cannot use a key, and enabling it allows access | API-18 | Review | No |
+| TC-E2E-10 | An admin creates an API key in the dashboard, and the key reads `GET /v1/me`. After the admin revokes it in the dashboard, its next request returns 401 | AUTH-09, API-17 | API + Web | No |
 
 ## MCP
 
@@ -349,6 +370,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-MCP-03 | A `tools/call` with a valid key returns the data | MCP-02 | MCP | No |
 | TC-MCP-04 | An MCP call lowers the same remaining count the API reports for that key | MCP-03 | MCP | No |
 | TC-MCP-05 | Tool responses fence Stonewake data between `STONEWAKE_DATA` markers | MCP-04 | MCP | No |
+| TC-E2E-13 | An agent reads the same data from the MCP server as from the REST API: a `tools/call` for the portfolio summary or the Deal Book returns the counts the API and the dashboard show, and the call lowers the `x-ratelimit-remaining` count the API reports for that key | MCP-03, PORT-02 | API + MCP + Web | No |
 
 ## Exports
 
@@ -404,28 +426,7 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-CMP-06 | The contract and security docs confirm customer data is not used to train models | COMP-04 | Review | No |
 | TC-CMP-07 | An accessibility scan of the main dashboard pages and docs finds no WCAG 2.1 AA failures beyond the published gaps | COMP-05 | Web | No |
 | TC-CMP-08 | A keyboard and screen reader pass of the main dashboard pages and docs finds no failures beyond the published gaps | COMP-05 | Web | No |
-
-## End-to-end flows
-
-Each flow uses the dashboard and the REST API in one test, so that a result is checked from both sides. The dashboard does the action, because `/v1` only reads, and the API then confirms what the dashboard did or shows. Cases that change workspace data follow the [test data rules](#before-running-the-tests): they use the team set aside for tests, and undo the change in teardown.
-
-| Case | Test | Requirements | Surface | Automated |
-| --- | --- | --- | --- | --- |
-| TC-E2E-01 | The Portfolio tiles show the same count for each of the six statuses as `GET /v1/portfolio/summary`, and the same total as `GET /v1/portfolio` | PORT-01, PORT-02 | API + Web | No |
-| TC-E2E-02 | The Deal Book lists deals in the same order as `GET /v1/deals`, and its count of held-back deals matches the API with `include_hidden` | DEAL-01, DEAL-05 | API + Web | No |
-| TC-E2E-03 | A deal found through `GET /v1/deals` opens in the dashboard with the same name and score, and its Briefing citations resolve through `POST /v1/citations/resolve` to the same evidence | DEAL-02, DEAL-10, EVID-01 | API + Web | No |
-| TC-E2E-04 | A country from `GET /v1/countries` opens in the dashboard with the same name and risk score as `GET /v1/countries/{code}`, and a country the API returns 404 for shows Page not found | CTRY-02, CTRY-08 | API + Web | No |
-| TC-E2E-05 | An institution found by search in the dashboard has the same detail as `GET /v1/entities/{entity_id}` | INST-01 | API + Web | No |
-| TC-E2E-06 | A company found by `GET /v1/search` is found by name in the Network page, and the relationships the graph draws match `GET /v1/nodes/{node_id}/network` | NET-01, NET-02 | API + Web | No |
-| TC-E2E-07 | A company added to the book in the dashboard appears in `GET /v1/portfolio` with a first review due one year later, and the portfolio total rises by one. Removing it with a reason takes it off the default list, and `include_inactive` still returns it | PORT-12, PORT-14, PORT-18, DEC-03 | API + Web | No |
-| TC-E2E-08 | Following a deal in the dashboard lists it under Following, and the API shows it as followed. Unfollowing reverses both | DEAL-08 | API + Web | No |
-| TC-E2E-09 | A deal dismissed in the dashboard with a reason leaves the book, and `GET /v1/deals?status=dismissed` returns it with that reason. The case runs only if a dismissal can be undone, or when Stonewake agrees it first | DEAL-09 | API + Web | No |
-| TC-E2E-10 | An admin creates an API key in the dashboard, and the key reads `GET /v1/me`. After the admin revokes it in the dashboard, its next request returns 401 | AUTH-09, API-17 | API + Web | No |
-| TC-E2E-11 | A viewer who cannot start a screening in the dashboard is also refused by a direct request, and an analyst can do both | AUTH-07, AUTH-06 | API + Web | No |
 | TC-E2E-12 | An action done in the dashboard, such as following a deal, appears in the audit log from `GET /v1/audit-log.csv`, attributed to the acting user | COMP-02, EXP-01 | API + Web | No |
-| TC-E2E-13 | An agent reads the same data from the MCP server as from the REST API: a `tools/call` for the portfolio summary or the Deal Book returns the counts the API and the dashboard show, and the call lowers the `x-ratelimit-remaining` count the API reports for that key | MCP-03, PORT-02 | API + MCP + Web | No |
-
-Not planned as a flow: recording a review or an assessment. These records are append-only (DEC-03), so teardown cannot undo them. Agree the case with Stonewake first, as the test data rules require.
 
 ## Product areas with no requirement yet
 
