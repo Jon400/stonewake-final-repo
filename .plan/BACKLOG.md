@@ -22,6 +22,7 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 
 - [x] docs/add-project-docs: commit the docs/ folder, which is currently untracked (GLOSSARY.md goes in docs/write-glossary)
 - [x] docs/write-test-plan: write docs/TEST_PLAN.md, which is currently empty
+- [x] docs/add-test-status-tracker: add a .test/ folder with STATUS.md, which tracks the last execution result of each automated test
 - [ ] docs/add-missing-requirements: add tracker requirements for the TC-GAP product areas in docs/TEST_PLAN.md, which have none yet
 - [x] docs/write-glossary: write docs/GLOSSARY.md, which is currently empty
 - [ ] docs/align-tracker-deal-terms: align the wording of DEAL-01 and DEAL-07 with the docs' financing window and stage terms
