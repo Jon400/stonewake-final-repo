@@ -16,10 +16,12 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 
 ## docs
 
+- [x] docs/add-ai-usage-readme: add an AI usage section to README.md
+
 - [x] docs/add-project-docs: commit the docs/ folder, which is currently untracked (GLOSSARY.md goes in docs/write-glossary)
 - [x] docs/write-test-plan: write docs/TEST_PLAN.md, which is currently empty
 - [ ] docs/add-missing-requirements: add tracker requirements for the TC-GAP product areas in docs/TEST_PLAN.md, which have none yet
-- [~] docs/write-glossary: write docs/GLOSSARY.md, which is currently empty
+- [x] docs/write-glossary: write docs/GLOSSARY.md, which is currently empty
 - [ ] docs/align-tracker-deal-terms: align the wording of DEAL-01 and DEAL-07 with the docs' financing window and stage terms
 - [x] docs/add-git-workflow-rule: write .claude/rules/git-workflow.md from the workflow in CLAUDE.md
 - [~] docs/align-rules-with-architecture: rewrite the naming, locator and test-data rules, copied from another project, to match docs/ARCHITECTURE.md
