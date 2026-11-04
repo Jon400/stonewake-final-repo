@@ -7,7 +7,7 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 ## infra
 
 - [ ] infra/use-env-credentials: move the credentials hardcoded in the spec files to env vars, then rotate them ([plan](infra/use-env-credentials.md))
-- [ ] infra/untrack-generated-files: stop tracking .env, node_modules, playwright-report and test-results, and add them to .gitignore (do after infra/use-env-credentials)
+- [x] infra/untrack-generated-files: stop tracking .env, node_modules, playwright-report and test-results, and add them to .gitignore (do after infra/use-env-credentials)
 - [x] infra/implement-architecture: build the src/ structure, tooling and CI from docs/ARCHITECTURE.md, and move the existing tests onto it ([plan](infra/implement-architecture.md))
 - [ ] infra/lint-spec-selectors: add an ESLint rule that blocks `page.locator`, `getBy*` and `request.*` in specs, which .claude/rules/locator.md forbids but nothing enforces
 - [ ] infra/align-semicolon-style: resolve the conflict between .claude/rules/code-style.md, which bans trailing semicolons, and .prettierrc.json and src/core, which use them

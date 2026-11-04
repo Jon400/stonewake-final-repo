@@ -2,8 +2,11 @@
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/playwright-report/
+/test-results/
 
 # Secrets
+.env
 .playwright-mcp/
 
 # Generated
