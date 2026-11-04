@@ -14,6 +14,7 @@ This plan lists the tests needed to cover the whole Stonewake product: the dashb
 | Surface | API | Calls the REST API |
 | Surface | Web | Uses the dashboard, the docs or the public site in a browser |
 | Surface | MCP | Calls the MCP server |
+| Surface | API + Web | One flow that uses both surfaces (and the MCP server in `API + MCP + Web`), so that they are shown to agree. See [End-to-end flows](#end-to-end-flows) |
 | Surface | Review | Checks documents or evidence, because a call to the product cannot show the result |
 | Automated | Yes, with a Test ID | An automated test makes this check. The [Test ID](GLOSSARY.md#test-automation), such as `api 9`, is the start of its title |
 | Automated | No | No automated test makes this check yet |
@@ -46,8 +47,9 @@ Where an automated test checks only part of a requirement, the requirement has o
 | Decisions | 6 | 0 | 6 |
 | Natural persons | 8 | 0 | 8 |
 | Compliance | 8 | 0 | 8 |
+| End-to-end flows | 13 | 0 | 13 |
 | Product areas with no requirement yet | 28 | 1 | 27 |
-| **Total** | **252** | **39** | **213** |
+| **Total** | **265** | **39** | **226** |
 
 ## Before running the tests
 
@@ -402,6 +404,28 @@ Don't treat either side of these [open questions](PRODUCT_DEFINITION.md#open-que
 | TC-CMP-06 | The contract and security docs confirm customer data is not used to train models | COMP-04 | Review | No |
 | TC-CMP-07 | An accessibility scan of the main dashboard pages and docs finds no WCAG 2.1 AA failures beyond the published gaps | COMP-05 | Web | No |
 | TC-CMP-08 | A keyboard and screen reader pass of the main dashboard pages and docs finds no failures beyond the published gaps | COMP-05 | Web | No |
+
+## End-to-end flows
+
+Each flow uses the dashboard and the REST API in one test, so that a result is checked from both sides. The dashboard does the action, because `/v1` only reads, and the API then confirms what the dashboard did or shows. Cases that change workspace data follow the [test data rules](#before-running-the-tests): they use the team set aside for tests, and undo the change in teardown.
+
+| Case | Test | Requirements | Surface | Automated |
+| --- | --- | --- | --- | --- |
+| TC-E2E-01 | The Portfolio tiles show the same count for each of the six statuses as `GET /v1/portfolio/summary`, and the same total as `GET /v1/portfolio` | PORT-01, PORT-02 | API + Web | No |
+| TC-E2E-02 | The Deal Book lists deals in the same order as `GET /v1/deals`, and its count of held-back deals matches the API with `include_hidden` | DEAL-01, DEAL-05 | API + Web | No |
+| TC-E2E-03 | A deal found through `GET /v1/deals` opens in the dashboard with the same name and score, and its Briefing citations resolve through `POST /v1/citations/resolve` to the same evidence | DEAL-02, DEAL-10, EVID-01 | API + Web | No |
+| TC-E2E-04 | A country from `GET /v1/countries` opens in the dashboard with the same name and risk score as `GET /v1/countries/{code}`, and a country the API returns 404 for shows Page not found | CTRY-02, CTRY-08 | API + Web | No |
+| TC-E2E-05 | An institution found by search in the dashboard has the same detail as `GET /v1/entities/{entity_id}` | INST-01 | API + Web | No |
+| TC-E2E-06 | A company found by `GET /v1/search` is found by name in the Network page, and the relationships the graph draws match `GET /v1/nodes/{node_id}/network` | NET-01, NET-02 | API + Web | No |
+| TC-E2E-07 | A company added to the book in the dashboard appears in `GET /v1/portfolio` with a first review due one year later, and the portfolio total rises by one. Removing it with a reason takes it off the default list, and `include_inactive` still returns it | PORT-12, PORT-14, PORT-18, DEC-03 | API + Web | No |
+| TC-E2E-08 | Following a deal in the dashboard lists it under Following, and the API shows it as followed. Unfollowing reverses both | DEAL-08 | API + Web | No |
+| TC-E2E-09 | A deal dismissed in the dashboard with a reason leaves the book, and `GET /v1/deals?status=dismissed` returns it with that reason. The case runs only if a dismissal can be undone, or when Stonewake agrees it first | DEAL-09 | API + Web | No |
+| TC-E2E-10 | An admin creates an API key in the dashboard, and the key reads `GET /v1/me`. After the admin revokes it in the dashboard, its next request returns 401 | AUTH-09, API-17 | API + Web | No |
+| TC-E2E-11 | A viewer who cannot start a screening in the dashboard is also refused by a direct request, and an analyst can do both | AUTH-07, AUTH-06 | API + Web | No |
+| TC-E2E-12 | An action done in the dashboard, such as following a deal, appears in the audit log from `GET /v1/audit-log.csv`, attributed to the acting user | COMP-02, EXP-01 | API + Web | No |
+| TC-E2E-13 | An agent reads the same data from the MCP server as from the REST API: a `tools/call` for the portfolio summary or the Deal Book returns the counts the API and the dashboard show, and the call lowers the `x-ratelimit-remaining` count the API reports for that key | MCP-03, PORT-02 | API + MCP + Web | No |
+
+Not planned as a flow: recording a review or an assessment. These records are append-only (DEC-03), so teardown cannot undo them. Agree the case with Stonewake first, as the test data rules require.
 
 ## Product areas with no requirement yet
 
