@@ -48,6 +48,15 @@ The prompts given to the AI were short task requests, one per backlog task. Exam
 
 The human owns the decisions: scope, requirements, which tests to write, credentials, and merging pull requests. AI output is reviewed before it is committed.
 
+### MCP usage
+
+MCP (Model Context Protocol) appears in this project in two ways:
+
+- **Playwright MCP, while building the tests.** The AI can drive a browser through the Playwright MCP server to read the [live dashboard](https://app.stonewake.ai), because the [locator rule](.claude/rules/locator.md) takes selectors from the live dashboard and not from older specs. Its output goes to `.playwright-mcp/`, which is git-ignored.
+- **Stonewake MCP server, as a surface under test.** The product has an MCP server at `mcp.stonewake.ai` that lets AI assistants read a workspace with an API key (requirements `MCP-01` to `MCP-04`). The [test plan](docs/TEST_PLAN.md#mcp) lists five MCP tests (`TC-MCP-01` to `TC-MCP-05`), and none is automated yet. When they are, they get a `src/mcp` folder and `*.mcp.spec.ts` specs, as the [architecture](docs/ARCHITECTURE.md#future-additions) describes.
+
+No MCP server is configured in the repository itself.
+
 ### AI flows built
 
 These are the repeatable flows that guide the AI in this repository:
