@@ -35,3 +35,5 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 - [x] docs/add-use-env-credentials-plan: commit the expanded plan for infra/use-env-credentials, which is currently untracked
 - [x] docs/add-git-workflow-rule: write .claude/rules/git-workflow.md from the workflow in CLAUDE.md
 - [x] docs/align-rules-with-architecture: rewrite the naming, locator and test-data rules, copied from another project, to match docs/ARCHITECTURE.md
+- [x] docs/move-e2e-cases-into-features: move the TC-E2E cases in docs/TEST_PLAN.md from their own section into the tables of the features they check
+- [ ] docs/fix-e2e-07-requirement-id: TC-E2E-07 in docs/TEST_PLAN.md names PORT-18, which is not in the tracker. The first review due one year later is PORT-10
