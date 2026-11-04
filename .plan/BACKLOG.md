@@ -26,5 +26,6 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 - [ ] docs/add-missing-requirements: add tracker requirements for the TC-GAP product areas in docs/TEST_PLAN.md, which have none yet
 - [x] docs/write-glossary: write docs/GLOSSARY.md, which is currently empty
 - [ ] docs/align-tracker-deal-terms: align the wording of DEAL-01 and DEAL-07 with the docs' financing window and stage terms
+- [x] docs/add-use-env-credentials-plan: commit the expanded plan for infra/use-env-credentials, which is currently untracked
 - [x] docs/add-git-workflow-rule: write .claude/rules/git-workflow.md from the workflow in CLAUDE.md
 - [x] docs/align-rules-with-architecture: rewrite the naming, locator and test-data rules, copied from another project, to match docs/ARCHITECTURE.md
