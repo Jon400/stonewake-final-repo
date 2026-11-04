@@ -24,4 +24,4 @@ Status: `[ ]` todo, `[~]` in progress, `[x]` done
 - [x] docs/write-glossary: write docs/GLOSSARY.md, which is currently empty
 - [ ] docs/align-tracker-deal-terms: align the wording of DEAL-01 and DEAL-07 with the docs' financing window and stage terms
 - [x] docs/add-git-workflow-rule: write .claude/rules/git-workflow.md from the workflow in CLAUDE.md
-- [~] docs/align-rules-with-architecture: rewrite the naming, locator and test-data rules, copied from another project, to match docs/ARCHITECTURE.md
+- [x] docs/align-rules-with-architecture: rewrite the naming, locator and test-data rules, copied from another project, to match docs/ARCHITECTURE.md
