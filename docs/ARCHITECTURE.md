@@ -133,7 +133,7 @@ Configuration comes from environment variables, and only `src/config` reads them
 | Screenshots | Taken for failed tests |
 | Workers | 2 |
 | Test timeout | 30 seconds |
-| CI triggers | Push to `master` or `main`, pull requests, and manual runs |
+| CI triggers | Manual runs and a daily schedule (06:00 UTC). Not on pull requests or pushes |
 | CI artifact retention | 14 days |
 | CI report | Published to GitHub Pages after each run on `master` |
 
